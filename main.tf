@@ -32,6 +32,7 @@ resource "digitalocean_droplet" "web2" {
 
 provisioner "remote-exec" {
     inline = [
+    "export DEBIAN_FRONTEND=noninteractive",
     "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 35696F43FC7DB4C2",
     "sudo apt-get update",
     "sudo apt install -y git",

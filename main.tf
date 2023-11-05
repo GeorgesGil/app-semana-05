@@ -12,7 +12,7 @@ provider "digitalocean" {
 
 
 
-resource "digitalocean_droplet" "web" {
+resource "digitalocean_droplet" "web2" {
   image    = "docker-20-04"
   name     = "server2"
   region   = "nyc3"
@@ -32,15 +32,17 @@ resource "digitalocean_droplet" "web" {
 
 provisioner "remote-exec" {
     inline = [
-    "sudo apt-get update",
     "export DEBIAN_FRONTEND=noninteractive",
+    "apt-get update",
+    "sudo ufw allow 8080",
     "sudo ufw allow 1339",
     "sudo ufw allow 443",
     "sudo ufw allow 5432",
     "sudo ufw allow 5433",
     "sudo ufw allow 8000",
-    "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 35696F43FC7DB4C2",
-    "sleep 30s",
+    "apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
+    "apt-get update",
+    "docker --version", 
     "sudo apt install -y git",
     "git clone https://github.com/GeorgesGil/app-semana-05.git",
     "cd app-semana-05/db-app",
@@ -122,5 +124,29 @@ provisioner "remote-exec" {
 #     "docker container ls",
 #     "sudo apt-get install -y postgresql-client",
 
+#   ]
+# }
+
+
+
+
+
+# provisioner "remote-exec" {
+#   inline = [
+#     "export DEBIAN_FRONTEND=noninteractive",
+#     "apt-get update",
+#     "sudo ufw allow 8080",
+#     "sudo ufw allow 1339",
+#     "sudo ufw allow 443",
+#     "sudo ufw allow 5432",
+#     "sudo ufw allow 5433",
+#     "sudo ufw allow 8000",
+#     "apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
+#     "apt-get update",
+#     "docker --version", 
+#     "docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts", // This line will run Jenkins in a Docker container
+#     "apt-get install -y git",
+#     "sleep 60",
+#     "docker exec $(docker ps -qf \"ancestor=jenkins/jenkins:lts\") cat /var/jenkins_home/secrets/initialAdminPassword", // This line will print the initial Jenkins admin password
 #   ]
 # }

@@ -33,8 +33,14 @@ resource "digitalocean_droplet" "web2" {
 provisioner "remote-exec" {
     inline = [
     "export DEBIAN_FRONTEND=noninteractive",
+    "sudo ufw allow 1339",
+    "sudo ufw allow 443",
+    "sudo ufw allow 5432",
+    "sudo ufw allow 5433",
+    "sudo ufw allow 8000",
     "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 35696F43FC7DB4C2",
     "sudo apt-get update",
+    "sleep 30s",
     "sudo apt install -y git",
     "git clone https://github.com/GeorgesGil/app-semana-05.git",
     "cd app-semana-05/db-app",
@@ -45,17 +51,9 @@ provisioner "remote-exec" {
     "docker-compose up -d --build",
     "docker container ls",
     "cd ../nginx-app",
-    "curl -L https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose",
-    "chmod +x /usr/local/bin/docker-compose",
-    "docker-compose --version",
     "docker-compose up -d --build",
     "docker container ls",
     "sudo apt-get install -y postgresql-client",
-    "sudo ufw allow 1339",
-    "sudo ufw allow 443",
-    "sudo ufw allow 5432",
-    "sudo ufw allow 5433",
-    "sudo ufw allow 8000"
   ]
 }
 

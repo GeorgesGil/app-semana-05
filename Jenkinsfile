@@ -1,6 +1,18 @@
 pipeline {
     agent any
 
+	parameters {
+        booleanParam(name: 'autoApprove', defaultValue: true, description: 'Automatically run apply after generating plan?')
+        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
+    }
+
+    environment {
+        token     = credentials('token')
+        ssh_fingerprint = credentials('ssh_fingerprint')
+        public_key    = credentials('public_key')
+		private_key    = credentials('private_key')
+    }
+	
     stages {
         stage('Checkout') {
             steps {

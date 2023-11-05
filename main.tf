@@ -13,7 +13,7 @@ provider "digitalocean" {
 
 
 resource "digitalocean_droplet" "web2" {
-  image    = "docker-20-04"
+  image    = "docker-22-04"
   name     = "server2"
   region   = "nyc3"
   size     = "s-1vcpu-1gb"
@@ -33,15 +33,15 @@ resource "digitalocean_droplet" "web2" {
 provisioner "remote-exec" {
     inline = [
     "export DEBIAN_FRONTEND=noninteractive",
-    "sudo apt-get update",
+    "apt-get update",
     "sudo ufw allow 8080",
     "sudo ufw allow 1339",
     "sudo ufw allow 443",
     "sudo ufw allow 5432",
     "sudo ufw allow 5433",
     "sudo ufw allow 8000",
-    "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
-    "sudo apt-get update",
+    "apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
+    "apt-get update",
     "docker --version", 
     "sudo apt install -y git",
     "git clone https://github.com/GeorgesGil/app-semana-05.git",

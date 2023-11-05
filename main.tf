@@ -55,6 +55,7 @@ resource "digitalocean_droplet" "web2" {
     "docker-compose up -d --build",
     "docker container ls",
     "sudo apt-get install -y postgresql-client",
+    
   ]
 }
 

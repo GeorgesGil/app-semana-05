@@ -33,8 +33,8 @@ resource "digitalocean_droplet" "web2" {
     inline = [
     "sudo apt-get update",
     "sudo apt install -y git",
-    "git clone https://github.com/GeorgesGil/AlgoritmosParalelos.git",
-    "cd AlgoritmosParalelos/Semana-04/go-docker-app/db-app",
+    "git clone https://github.com/GeorgesGil/app-semana-05.git",
+    "cd db-app",
     "curl -L https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose",
     "chmod +x /usr/local/bin/docker-compose",
     "docker-compose --version",

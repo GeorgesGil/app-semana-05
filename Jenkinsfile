@@ -37,17 +37,17 @@ pipeline {
         }
         stage('Apply') {
             options {
-                timeout(time: 10, unit: 'MINUTES')
+            timeout(time: 10, unit: 'MINUTES')
             }
             steps {
-                script {
-                    try {
-                        sh 'terraform ${action} -input=false tfplan'
-                    } catch (Exception e) {
-                        env.apply_timed_out = true
-                        throw e
-                    }
+            script {
+                try {
+                    sh 'terraform apply -input=false tfplan'
+                } catch (Exception e) {
+                    env.apply_timed_out = true
+                    throw e
                 }
+            }
             }
         }
         stage('Destroy') {

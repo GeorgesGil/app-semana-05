@@ -1,16 +1,13 @@
 pipeline {
     agent any
 
-	parameters {
-        booleanParam(name: 'autoApprove', defaultValue: true, description: 'Automatically run apply after generating plan?')
-        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
-    }
 
     environment {
         token     = credentials('token')
         ssh_fingerprint = credentials('ssh_fingerprint')
         public_key    = credentials('public_key')
-		private_key    = credentials('private_key')
+        private_key    = credentials('private_key')
+        apply_timed_out = false
     }
 	
     stages {
@@ -38,24 +35,31 @@ pipeline {
                 sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
-        stage('Apply / Destroy') {
+        stage('Apply') {
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
             steps {
                 script {
-                    if (params.action == 'apply') {
-                        if (!params.autoApprove) {
-                            def plan = readFile 'tfplan.txt'
-                            input message: "Do you want to apply the plan?",
-                            parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-                        }
-
+                    try {
                         sh 'terraform ${action} -input=false tfplan'
-                    } else if (params.action == 'destroy') {
-                        sh 'terraform ${action} --auto-approve'
-                    } else {
-                        error "Invalid action selected. Please choose either 'apply' or 'destroy'."
+                    } catch (Exception e) {
+                        env.apply_timed_out = true
+                        throw e
                     }
                 }
             }
         }
+        stage('Destroy') {
+            when {
+                expression { return env.apply_timed_out == 'true' }
+            }
+            steps {
+                script {
+                    sh 'terraform ${action} --auto-approve'
+                }
+            }
+        }
+    
     }
 }

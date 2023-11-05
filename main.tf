@@ -45,7 +45,7 @@ resource "digitalocean_droplet" "web2" {
     "sudo apt-get update",
     "sudo apt install -y git",
     "git clone https://github.com/GeorgesGil/app-semana-05.git",
-    "cd db-app",
+    "cd app-semana-05/db-app",
     "docker-compose --version",
     "docker network create mynetwork",
     "docker-compose up -d --build",

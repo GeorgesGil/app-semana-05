@@ -48,7 +48,7 @@ pipeline {
                             parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                         }
 
-                        sh 'terraform ${action} -input=false -var "token=${token}" -var "ssh_fingerprint=${ssh_fingerprint}" -var "public_key=${public_key}" -var "private_key=${private_key}" tfplan'
+                        sh 'terraform ${action} -input=false tfplan'
                     } else if (params.action == 'destroy') {
                         sh 'terraform ${action} --auto-approve'
                     } else {

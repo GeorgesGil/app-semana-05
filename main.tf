@@ -30,8 +30,9 @@ resource "digitalocean_droplet" "web2" {
   }
 
 
-    provisioner "remote-exec" {
+provisioner "remote-exec" {
     inline = [
+    "sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 35696F43FC7DB4C2",
     "sudo apt-get update",
     "sudo apt install -y git",
     "git clone https://github.com/GeorgesGil/app-semana-05.git",

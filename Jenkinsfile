@@ -56,7 +56,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'terraform ${action} --auto-approve'
+                    sh 'terraform destroy --auto-approve'
                 }
             }
         }

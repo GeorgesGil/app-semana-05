@@ -31,6 +31,17 @@ resource "digitalocean_droplet" "web2" {
 
   provisioner "remote-exec" {
     inline = [
+    "sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 35696F43FC7DB4C2",
+    "sudo killall apt apt-get",
+    "sudo ufw allow 1339",
+    "sudo ufw allow 443",
+    "sudo ufw allow 5432",
+    "sudo ufw allow 5433",
+    "sudo ufw allow 8000",
+    "sudo rm /var/lib/apt/lists/lock",
+    "sudo rm /var/cache/apt/archives/lock",
+    "sudo rm /var/lib/dpkg/lock*",
+    "sudo dpkg --configure -a",
     "sudo apt-get update",
     "sudo apt install -y git",
     "git clone https://github.com/GeorgesGil/app-semana-05.git",
@@ -44,11 +55,6 @@ resource "digitalocean_droplet" "web2" {
     "docker-compose up -d --build",
     "docker container ls",
     "sudo apt-get install -y postgresql-client",
-    "sudo ufw allow 1339",
-    "sudo ufw allow 443",
-    "sudo ufw allow 5432",
-    "sudo ufw allow 5433",
-    "sudo ufw allow 8000"
   ]
 }
 

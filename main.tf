@@ -13,7 +13,7 @@ provider "digitalocean" {
 
 
 resource "digitalocean_droplet" "web2" {
-  image    = "docker-20-04-x64"
+  image    = "ubuntu-20-04"
   name     = "server2"
   region   = "nyc3"
   size     = "s-1vcpu-1gb"

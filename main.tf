@@ -57,7 +57,6 @@ provisioner "remote-exec" {
     "docker container ls",
     "cd ../nginx-app",
     "docker-compose up -d --build",
-    "docker container ls",
     "sudo apt-get install -y postgresql-client",
   ]
 }
